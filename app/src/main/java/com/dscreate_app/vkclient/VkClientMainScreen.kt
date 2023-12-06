@@ -26,7 +26,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen() {
-    val snackbarHostState = SnackbarHostState()
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+    Log.d("MainScreen", "рекомпозиция")
     val scope = rememberCoroutineScope()
     val fabIsVisible = remember {
         mutableStateOf(true)
@@ -59,8 +62,6 @@ fun MainScreen() {
         },
         bottomBar = {
             NavigationBar {
-                Log.d("MyLog", "NavigationBar")
-
                 val selectedItemPos = remember {
                     mutableStateOf(0)
                 }
