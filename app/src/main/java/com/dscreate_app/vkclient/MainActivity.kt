@@ -49,21 +49,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VkClientTheme {
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .background(MaterialTheme.colorScheme.background)
-//                        .padding(8.dp)
-//                ) {
-//                    PostCard()
-//                }
-                Test()
+                MainScreen()
             }
         }
     }
-}
-
-@Composable
-private fun Test() {
-   Drawer()
 }
