@@ -13,3 +13,4 @@ import com.dscreate_app.vkclient.R
 
 val Black500 = Color(0xFF858484)
 val Black900 = Color(0xFF000000)
+val WhiteLight = Color(0xFFF3F3F3)
