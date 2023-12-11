@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -19,18 +20,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dscreate_app.vkclient.navigation.AppNavGraph
+import com.dscreate_app.vkclient.navigation.NavigationState
 import com.dscreate_app.vkclient.navigation.Screens
+import com.dscreate_app.vkclient.navigation.rememberNavigationState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
-    val navHostController = rememberNavController()
+    val navigationState = rememberNavigationState()
 
     Scaffold(
         bottomBar = {
             NavigationBar(containerColor = MaterialTheme.colorScheme.primary) {
                 //Запоминает текущ state экрана
-                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
                 //передает текущ state экрана для переключения и изменения кнопок.
                 val currentRoute = navBackStackEntry?.destination?.route
 
@@ -42,16 +45,7 @@ fun MainScreen(viewModel: MainViewModel) {
                 items.forEach { item ->
                     NavigationBarItem(
                         selected = currentRoute == item.screen.route,
-                        onClick = {
-                            navHostController.navigate(item.screen.route) {
-                                //Оставляет лишь стартовый экран при переходах по табам и возврате на кнопку <-
-                                popUpTo(Screens.NewsFeed.route) {
-                                    saveState = true // сохраняет state экрана при возврате на этот экран
-                                }
-                                launchSingleTop = true //Запускает только 1 composable функцию на клик.
-                                restoreState = true // Восстанавливает сохран state после переходов по табам.
-                            }
-                                  },
+                        onClick = { navigationState.navigateTo(item.screen.route) },
                         icon = {
                             Icon(item.icon , contentDescription = null)
                         },
@@ -65,7 +59,7 @@ fun MainScreen(viewModel: MainViewModel) {
     ) { paddingValues ->
         
         AppNavGraph(
-            navHostController = navHostController,
+            navHostController = navigationState.navHostController,
             homeScreenContent = { HomeScreen(viewModel = viewModel, paddingValues = paddingValues) },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
             profileScreenContent = { TextCounter(name = "Profile") }
