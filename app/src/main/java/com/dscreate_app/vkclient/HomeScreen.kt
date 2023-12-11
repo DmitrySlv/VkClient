@@ -40,7 +40,7 @@ fun HomeScreen(
                 viewModel.remove(feedPost)
             }
             SwipeToDismissBox(
-                modifier = Modifier.animateItemPlacement(),
+               // modifier = Modifier.animateItemPlacement(),
                 state = dismissState,
                 backgroundContent = {},
                 directions = setOf(DismissDirection.EndToStart)
