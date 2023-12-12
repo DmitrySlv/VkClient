@@ -1,6 +1,6 @@
 package com.dscreate_app.vkclient
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dscreate_app.vkclient.domain.FeedPost
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: MainViewModel,
@@ -27,13 +26,22 @@ fun HomeScreen(
     when (val currentState = screenState.value) {
         is HomeScreenState.Posts -> {
             FeedPosts(
-                posts = currentState.posts,
                 viewModel = viewModel,
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                posts = currentState.posts
             )
         }
         is HomeScreenState.Comments -> {
-            CommentsScreen(feedPost = currentState.feedPost, commentsList = currentState.comments)
+            CommentsScreen(
+                feedPost = currentState.feedPost,
+                commentsList = currentState.comments,
+                onBackPressed = {
+                    viewModel.closeComments()
+                }
+            )
+            BackHandler { //При клике на кнопку назад на устройстве, возвращает назад на экран, а не закрывает приложение.
+                viewModel.closeComments()
+            }
         }
         HomeScreenState.Initial -> {}
     }
@@ -42,9 +50,9 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FeedPosts(
-    posts: List<FeedPost>,
     viewModel: MainViewModel,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    posts: List<FeedPost>,
 ) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues),
@@ -79,8 +87,8 @@ private fun FeedPosts(
                     onShareClickListener = { statisticItem ->
                         viewModel.updateCount(feedPost, statisticItem)
                     },
-                    onCommentClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
+                    onCommentClickListener = {
+                        viewModel.showComments(feedPost)
                     }
                 )
             }

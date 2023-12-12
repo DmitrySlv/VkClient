@@ -35,7 +35,8 @@ import com.dscreate_app.vkclient.ui.theme.VkClientTheme
 @Composable
 fun CommentsScreen(
     feedPost: FeedPost,
-    commentsList: List<PostComment>
+    commentsList: List<PostComment>,
+    onBackPressed: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -45,7 +46,7 @@ fun CommentsScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { }
+                        onClick = { onBackPressed() }
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
