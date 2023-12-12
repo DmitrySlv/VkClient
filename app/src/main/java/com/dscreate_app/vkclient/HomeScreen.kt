@@ -1,6 +1,5 @@
 package com.dscreate_app.vkclient
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -14,45 +13,38 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dscreate_app.vkclient.domain.FeedPost
+import com.dscreate_app.vkclient.view_models.NewsFeedViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: MainViewModel,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onCommentClickListener: (FeedPost) -> Unit
 ) {
-    val screenState= viewModel.screenState.observeAsState(HomeScreenState.Initial)
+    val viewModel: NewsFeedViewModel = viewModel()
+    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
 
     when (val currentState = screenState.value) {
-        is HomeScreenState.Posts -> {
+        is NewsFeedScreenState.Posts -> {
             FeedPosts(
                 viewModel = viewModel,
                 paddingValues = paddingValues,
-                posts = currentState.posts
+                posts = currentState.posts,
+                onCommentClickListener = onCommentClickListener
             )
         }
-        is HomeScreenState.Comments -> {
-            CommentsScreen(
-                feedPost = currentState.feedPost,
-                commentsList = currentState.comments,
-                onBackPressed = {
-                    viewModel.closeComments()
-                }
-            )
-            BackHandler { //При клике на кнопку назад на устройстве, возвращает назад на экран, а не закрывает приложение.
-                viewModel.closeComments()
-            }
-        }
-        HomeScreenState.Initial -> {}
+        NewsFeedScreenState.Initial -> {}
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FeedPosts(
-    viewModel: MainViewModel,
+    viewModel: NewsFeedViewModel,
     paddingValues: PaddingValues,
     posts: List<FeedPost>,
+    onCommentClickListener: (FeedPost) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues),
@@ -88,7 +80,7 @@ private fun FeedPosts(
                         viewModel.updateCount(feedPost, statisticItem)
                     },
                     onCommentClickListener = {
-                        viewModel.showComments(feedPost)
+                        onCommentClickListener(feedPost)
                     }
                 )
             }

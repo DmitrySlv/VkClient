@@ -5,16 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import com.dscreate_app.vkclient.ui.theme.VkClientTheme
+import com.dscreate_app.vkclient.view_models.NewsFeedViewModel
 
 class MainActivity : ComponentActivity() {
-
-    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             VkClientTheme {
-                MainScreen(viewModel)
+                MainScreen()
             }
         }
     }
