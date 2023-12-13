@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.navigation.AppNavGraph
@@ -38,8 +39,6 @@ fun MainScreen() {
             NavigationBar(containerColor = MaterialTheme.colorScheme.primary) {
                 //Запоминает текущ state экрана
                 val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
-                //передает текущ state экрана для переключения и изменения кнопок.
-                val currentRoute = navBackStackEntry?.destination?.route
 
                 val items = listOf(
                     NavigationItem.Home,
@@ -47,11 +46,20 @@ fun MainScreen() {
                     NavigationItem.Profile
                 )
                 items.forEach { item ->
+                    // Проверяет совпадение route с текущ route для отметки кнопки в bottomMenu. Сравнивание с Home, NewsFeed и Comments
+                    val selected = navBackStackEntry?.destination?.hierarchy?.any {
+                        it.route == item.screen.route
+                    } ?: false
+
                     NavigationBarItem(
-                        selected = currentRoute == item.screen.route,
-                        onClick = { navigationState.navigateTo(item.screen.route) },
+                        selected = selected,
+                        onClick = {
+                            if (!selected) { // отменяет клик по табам только если таб не отмечен
+                                navigationState.navigateTo(item.screen.route)
+                            }
+                        },
                         icon = {
-                            Icon(item.icon , contentDescription = null)
+                            Icon(item.icon, contentDescription = null)
                         },
                         label = {
                             Text(text = stringResource(id = item.titleResId))
@@ -69,7 +77,7 @@ fun MainScreen() {
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         commentsToPost.value = it
-                        navigationState.navigateTo(Screens.Comments.route)
+                        navigationState.navigateToComments()
                     }
                 )
             },
@@ -78,7 +86,9 @@ fun MainScreen() {
             commentsScreenContent = {
                 CommentsScreen(
                     feedPost = commentsToPost.value!!,
-                    onBackPressed = { commentsToPost.value = null }
+                    onBackPressed = {
+                        navigationState.navHostController.popBackStack() // по кнопке <- закрыв экран без рекомпозици
+                    }
                 )
             }
         )
