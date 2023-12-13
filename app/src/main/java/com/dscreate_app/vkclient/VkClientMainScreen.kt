@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.navigation.AppNavGraph
+import com.dscreate_app.vkclient.navigation.Screens
 import com.dscreate_app.vkclient.navigation.rememberNavigationState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -63,23 +64,23 @@ fun MainScreen() {
         
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            homeScreenContent = {
-                if (commentsToPost.value == null) {
-                    HomeScreen(
-                        paddingValues = paddingValues,
-                        onCommentClickListener = {
-                            commentsToPost.value = it
-                        }
-                    )
-                } else {
-                    CommentsScreen(
-                        feedPost = commentsToPost.value!!,
-                        onBackPressed = { commentsToPost.value = null }
-                    )
-                }
+            newsFeedScreenContent = {
+                HomeScreen(
+                    paddingValues = paddingValues,
+                    onCommentClickListener = {
+                        commentsToPost.value = it
+                        navigationState.navigateTo(Screens.Comments.route)
+                    }
+                )
             },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
-            profileScreenContent = { TextCounter(name = "Profile") }
+            profileScreenContent = { TextCounter(name = "Profile") },
+            commentsScreenContent = {
+                CommentsScreen(
+                    feedPost = commentsToPost.value!!,
+                    onBackPressed = { commentsToPost.value = null }
+                )
+            }
         )
     }
 }
