@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.dscreate_app.vkclient.domain.FeedPost
 
 class NavigationState(
     val navHostController: NavHostController
@@ -21,8 +22,8 @@ class NavigationState(
         }
     }
     //нужен для того чтобы при открытии комментариев и переходе на др. вкладки state комментариев сохранялся при возврате на экран
-    fun navigateToComments() {
-        navHostController.navigate(Screens.Comments.route)
+    fun navigateToComments(feedPost: FeedPost) {
+        navHostController.navigate(Screens.Comments.getRouteWithArgs(feedPost))
     }
 }
 

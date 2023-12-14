@@ -30,10 +30,6 @@ import com.dscreate_app.vkclient.navigation.rememberNavigationState
 fun MainScreen() {
     val navigationState = rememberNavigationState()
 
-    val commentsToPost: MutableState<FeedPost?> = remember {
-        mutableStateOf(null)
-    }
-
     Scaffold(
         bottomBar = {
             NavigationBar(containerColor = MaterialTheme.colorScheme.primary) {
@@ -76,16 +72,15 @@ fun MainScreen() {
                 HomeScreen(
                     paddingValues = paddingValues,
                     onCommentClickListener = {
-                        commentsToPost.value = it
-                        navigationState.navigateToComments()
+                        navigationState.navigateToComments(it)
                     }
                 )
             },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
             profileScreenContent = { TextCounter(name = "Profile") },
-            commentsScreenContent = {
+            commentsScreenContent = { feedPost ->
                 CommentsScreen(
-                    feedPost = commentsToPost.value!!,
+                    feedPost = feedPost,
                     onBackPressed = {
                         navigationState.navHostController.popBackStack() // по кнопке <- закрыв экран без рекомпозици
                     }
