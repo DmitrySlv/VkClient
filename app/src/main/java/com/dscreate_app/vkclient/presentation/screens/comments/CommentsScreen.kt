@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient.screens
+package com.dscreate_app.vkclient.presentation.screens.comments
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -29,12 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.dscreate_app.vkclient.CommentsScreenState
-import com.dscreate_app.vkclient.CommentsViewModelFactory
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.domain.PostComment
+import com.dscreate_app.vkclient.presentation.screens.comments.view_model.CommentsViewModel
+import com.dscreate_app.vkclient.presentation.screens.comments.view_model.CommentsViewModelFactory
 import com.dscreate_app.vkclient.ui.theme.VkClientTheme
-import com.dscreate_app.vkclient.view_models.CommentsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

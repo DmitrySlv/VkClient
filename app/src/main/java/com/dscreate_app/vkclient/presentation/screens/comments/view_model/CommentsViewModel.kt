@@ -1,11 +1,11 @@
-package com.dscreate_app.vkclient.view_models
+package com.dscreate_app.vkclient.presentation.screens.comments.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dscreate_app.vkclient.CommentsScreenState
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.domain.PostComment
+import com.dscreate_app.vkclient.presentation.screens.comments.CommentsScreenState
 
 class CommentsViewModel(
     feedPost: FeedPost

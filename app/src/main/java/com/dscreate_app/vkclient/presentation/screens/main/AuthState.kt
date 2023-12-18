@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.presentation.screens.main
 
 sealed class AuthState {
 

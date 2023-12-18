@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient.screens
+package com.dscreate_app.vkclient.presentation.screens.news
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,13 +14,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.dscreate_app.vkclient.NewsFeedScreenState
-import com.dscreate_app.vkclient.PostCard
 import com.dscreate_app.vkclient.domain.FeedPost
-import com.dscreate_app.vkclient.view_models.NewsFeedViewModel
+import com.dscreate_app.vkclient.presentation.screens.news.view_model.NewsFeedViewModel
 
 @Composable
-fun HomeScreen(
+fun NewsFeedScreen(
     paddingValues: PaddingValues,
     onCommentClickListener: (FeedPost) -> Unit
 ) {

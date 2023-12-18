@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.samples
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.dscreate_app.vkclient.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.presentation.screens.comments
 
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.domain.PostComment

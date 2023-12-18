@@ -1,9 +1,8 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.presentation.screens.comments.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dscreate_app.vkclient.domain.FeedPost
-import com.dscreate_app.vkclient.view_models.CommentsViewModel
 
 class CommentsViewModelFactory(
     private val feedPost: FeedPost

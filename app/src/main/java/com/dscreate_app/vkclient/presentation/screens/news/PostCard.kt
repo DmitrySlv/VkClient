@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.presentation.screens.news
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.dscreate_app.vkclient.R
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.domain.StatisticItem
 import com.dscreate_app.vkclient.domain.StatisticType

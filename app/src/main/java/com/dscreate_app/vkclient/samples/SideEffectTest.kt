@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.samples
 
 import android.os.Handler
 import androidx.compose.foundation.layout.Column

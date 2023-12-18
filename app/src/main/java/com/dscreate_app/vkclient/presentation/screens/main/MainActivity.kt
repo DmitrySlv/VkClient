@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.presentation.screens.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,10 +6,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.dscreate_app.vkclient.screens.LoginScreen
-import com.dscreate_app.vkclient.screens.MainScreen
+import com.dscreate_app.vkclient.presentation.screens.main.view_model.MainViewModel
 import com.dscreate_app.vkclient.ui.theme.VkClientTheme
-import com.dscreate_app.vkclient.view_models.MainViewModel
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
 

@@ -1,11 +1,11 @@
-package com.dscreate_app.vkclient.view_models
+package com.dscreate_app.vkclient.presentation.screens.news.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dscreate_app.vkclient.NewsFeedScreenState
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.domain.StatisticItem
+import com.dscreate_app.vkclient.presentation.screens.news.NewsFeedScreenState
 
 class NewsFeedViewModel: ViewModel() {
 

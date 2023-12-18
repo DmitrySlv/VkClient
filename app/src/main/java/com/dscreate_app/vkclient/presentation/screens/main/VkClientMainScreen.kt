@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient.screens
+package com.dscreate_app.vkclient.presentation.screens.main
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -18,9 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dscreate_app.vkclient.NavigationItem
 import com.dscreate_app.vkclient.navigation.AppNavGraph
 import com.dscreate_app.vkclient.navigation.rememberNavigationState
+import com.dscreate_app.vkclient.presentation.screens.comments.CommentsScreen
+import com.dscreate_app.vkclient.presentation.screens.news.NewsFeedScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -66,7 +67,7 @@ fun MainScreen() {
         AppNavGraph(
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
-                HomeScreen(
+                NewsFeedScreen(
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         navigationState.navigateToComments(it)

@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient.screens
+package com.dscreate_app.vkclient.presentation.screens.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
