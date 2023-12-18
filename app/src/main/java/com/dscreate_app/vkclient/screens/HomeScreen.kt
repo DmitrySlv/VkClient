@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +14,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dscreate_app.vkclient.NewsFeedScreenState
+import com.dscreate_app.vkclient.PostCard
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.view_models.NewsFeedViewModel
 

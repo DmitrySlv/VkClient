@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -9,10 +9,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -20,9 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dscreate_app.vkclient.domain.FeedPost
+import com.dscreate_app.vkclient.NavigationItem
 import com.dscreate_app.vkclient.navigation.AppNavGraph
-import com.dscreate_app.vkclient.navigation.Screens
 import com.dscreate_app.vkclient.navigation.rememberNavigationState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

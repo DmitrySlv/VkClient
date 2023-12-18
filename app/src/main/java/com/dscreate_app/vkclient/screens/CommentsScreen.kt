@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient
+package com.dscreate_app.vkclient.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -29,6 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dscreate_app.vkclient.CommentsScreenState
+import com.dscreate_app.vkclient.CommentsViewModelFactory
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.domain.PostComment
 import com.dscreate_app.vkclient.ui.theme.VkClientTheme
