@@ -24,6 +24,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         //токен хранится в sharedPref, т.к получение/сохран токена делается быстро и других нет доступа к нему.
         // Только в приложении. Минус: можно увидеть token, если получить root доступ.
         val loggedIn = token != null && token.isValid
+        Log.d("MyLog", "Token: ${token?.accessToken}") // Выдает в лог текущ токен
         _authState.value = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
     }
 
