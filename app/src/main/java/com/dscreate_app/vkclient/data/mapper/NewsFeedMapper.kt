@@ -4,6 +4,10 @@ import com.dscreate_app.vkclient.data.models.NewsFeedResponseDto
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.domain.StatisticItem
 import com.dscreate_app.vkclient.domain.StatisticType
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.absoluteValue
 
 class NewsFeedMapper {
@@ -20,7 +24,7 @@ class NewsFeedMapper {
             val feedPost = FeedPost(
                 id = post.id,
                 communityName = group.name,
-                publicationDate = post.date.toString(),
+                publicationDate = mapTimestampToDate(post.date * 1000), // *1000 для отображения верной даты
                 communityImageUrl = group.imageUrl,
                 contentText = post.text,
                 contentImageUrl = post.attachments?.firstOrNull()?.photo?.photoUrls?.lastOrNull()?.url,
@@ -29,10 +33,16 @@ class NewsFeedMapper {
                     StatisticItem(type = StatisticType.COMMENTS, post.comments.count),
                     StatisticItem(type = StatisticType.VIEWS, post.views.count),
                     StatisticItem(type = StatisticType.SHARES, post.reposts.count)
-                )
+                ),
+                isFavourite = post.isFavourite
             )
             result.add(feedPost)
         }
         return result
+    }
+
+    private fun mapTimestampToDate(timestamp: Long): String {
+        val date = Date(timestamp)
+        return SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
     }
 }
