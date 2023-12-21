@@ -4,7 +4,6 @@ import com.dscreate_app.vkclient.data.models.NewsFeedResponseDto
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.domain.StatisticItem
 import com.dscreate_app.vkclient.domain.StatisticType
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,6 +22,7 @@ class NewsFeedMapper {
             val group = groups.find { it.id == post.communityId.absoluteValue } ?: break
             val feedPost = FeedPost(
                 id = post.id,
+                communityId = post.communityId,
                 communityName = group.name,
                 publicationDate = mapTimestampToDate(post.date * 1000), // *1000 для отображения верной даты
                 communityImageUrl = group.imageUrl,
@@ -34,7 +34,8 @@ class NewsFeedMapper {
                     StatisticItem(type = StatisticType.VIEWS, post.views.count),
                     StatisticItem(type = StatisticType.SHARES, post.reposts.count)
                 ),
-                isFavourite = post.isFavourite
+                //если будет 1 то поле true,если 0 то false. Где true - лайк стоит.Из документации к API
+                isLiked = post.likes.userLikes > 0
             )
             result.add(feedPost)
         }
