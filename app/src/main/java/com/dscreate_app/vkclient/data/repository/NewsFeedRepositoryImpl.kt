@@ -39,6 +39,15 @@ class NewsFeedRepositoryImpl(application: Application) {
         return feedPosts
     }
 
+    suspend fun deletePost(feedPost: FeedPost) {
+        apiService.ignorePost(
+            accessToken = getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+        _feedPosts.remove(feedPost) //после удаления с сервера удаляет локально из репозитория
+    }
+
     private fun getAccessToken(): String {
         return token?.accessToken ?: throw IllegalStateException("Token is null")
     }
