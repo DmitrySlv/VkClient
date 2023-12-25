@@ -1,7 +1,9 @@
 package com.dscreate_app.vkclient.data.mapper
 
+import com.dscreate_app.vkclient.data.models.CommentsResponseDto
 import com.dscreate_app.vkclient.data.models.NewsFeedResponseDto
 import com.dscreate_app.vkclient.domain.FeedPost
+import com.dscreate_app.vkclient.domain.PostComment
 import com.dscreate_app.vkclient.domain.StatisticItem
 import com.dscreate_app.vkclient.domain.StatisticType
 import java.text.SimpleDateFormat
@@ -24,7 +26,7 @@ class NewsFeedMapper {
                 id = post.id,
                 communityId = post.communityId,
                 communityName = group.name,
-                publicationDate = mapTimestampToDate(post.date * 1000), // *1000 для отображения верной даты
+                publicationDate = mapTimestampToDate(post.date), // *1000 для отображения верной даты
                 communityImageUrl = group.imageUrl,
                 contentText = post.text,
                 contentImageUrl = post.attachments?.firstOrNull()?.photo?.photoUrls?.lastOrNull()?.url,
@@ -43,7 +45,26 @@ class NewsFeedMapper {
     }
 
     private fun mapTimestampToDate(timestamp: Long): String {
-        val date = Date(timestamp)
+        val date = Date(timestamp * 1000)
         return SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
+    }
+
+    fun mapResponseToComments(commentsResponse: CommentsResponseDto): List<PostComment> {
+        val result = mutableListOf<PostComment>()
+        val listComments = commentsResponse.content.comments
+        val listProfiles = commentsResponse.content.profiles
+        for (comment in listComments) {
+            if (comment.text.isBlank()) continue //пропускает пустой item
+            val author = listProfiles.firstOrNull { it.id == comment.authorId } ?: continue //continue - если null по позиции, то перейдет к след id в списке
+            val postComment = PostComment(
+                id = comment.id,
+                authorName = "${author.firstName} ${author.lastName}",
+                authorAvatarUrl = author.avatarUrl,
+                commentText = comment.text,
+                publicationDate = mapTimestampToDate(comment.date)
+            )
+            result.add(postComment)
+        }
+        return result
     }
 }
