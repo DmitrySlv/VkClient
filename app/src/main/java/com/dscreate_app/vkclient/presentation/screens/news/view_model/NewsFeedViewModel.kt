@@ -1,13 +1,16 @@
 package com.dscreate_app.vkclient.presentation.screens.news.view_model
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dscreate_app.vkclient.data.repository.NewsFeedRepositoryImpl
 import com.dscreate_app.vkclient.domain.FeedPost
 import com.dscreate_app.vkclient.extantions.mergeWith
 import com.dscreate_app.vkclient.presentation.screens.news.NewsFeedScreenState
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -16,6 +19,9 @@ import kotlinx.coroutines.launch
 class NewsFeedViewModel(application: Application): AndroidViewModel(application) {
 
     private val repository = NewsFeedRepositoryImpl(application)
+    private val exceptionHandler = CoroutineExceptionHandler { _,_ ->
+        Log.d("NewsFeedViewModel", "Exception caught by exception handler")
+    }
 
     private val recommendationsFlow = repository.recommendations
 
@@ -40,13 +46,13 @@ class NewsFeedViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun changeLikeStatus(feedPost: FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.changeLikeStatus(feedPost)
         }
     }
 
     fun remove(feedPost: FeedPost) {
-       viewModelScope.launch {
+       viewModelScope.launch(exceptionHandler) {
            repository.deletePost(feedPost)
        }
     }
