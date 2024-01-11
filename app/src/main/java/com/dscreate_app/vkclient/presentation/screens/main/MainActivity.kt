@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dscreate_app.vkclient.domain.AuthState
 import com.dscreate_app.vkclient.presentation.screens.main.view_model.MainViewModel
 import com.dscreate_app.vkclient.ui.theme.VkClientTheme
 import com.vk.api.sdk.VK
@@ -18,12 +19,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             VkClientTheme {
                 val viewModel: MainViewModel = viewModel()
-                val authState = viewModel.authState.observeAsState(AuthState.Initial)
+                val authState = viewModel.authState.collectAsState(AuthState.Initial)
 
                 val launcher = rememberLauncherForActivityResult(
                     contract = VK.getVKAuthActivityResultContract()
                 ) {
-                    viewModel.performAuthResult(it)
+                    viewModel.performAuthResult()
                 }
                 when (authState.value) {
                     AuthState.Authorized -> {

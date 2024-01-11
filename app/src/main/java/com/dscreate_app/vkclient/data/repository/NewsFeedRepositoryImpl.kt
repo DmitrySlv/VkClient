@@ -8,7 +8,7 @@ import com.dscreate_app.vkclient.domain.PostComment
 import com.dscreate_app.vkclient.domain.StatisticItem
 import com.dscreate_app.vkclient.domain.StatisticType
 import com.dscreate_app.vkclient.extantions.mergeWith
-import com.dscreate_app.vkclient.presentation.screens.news.NewsFeedScreenState
+import com.dscreate_app.vkclient.domain.AuthState
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +25,8 @@ import kotlinx.coroutines.flow.stateIn
 class NewsFeedRepositoryImpl(application: Application) {
 
    private val storage = VKPreferencesKeyValueStorage(application)
-   private val token = VKAccessToken.restore(storage)
+   private val token
+       get() = VKAccessToken.restore(storage)
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     private val nextDataNeededEvents = MutableSharedFlow<Unit>(replay = 1)
@@ -57,7 +58,6 @@ class NewsFeedRepositoryImpl(application: Application) {
         true
     }
 
-
     private val apiService = ApiFactory.apiService
     private val mapper = NewsFeedMapper()
 
@@ -66,6 +66,25 @@ class NewsFeedRepositoryImpl(application: Application) {
         get() = _feedPosts.toList()
 
     private var nextFrom: String? = null
+
+    private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
+
+    val authStateFlow = flow {
+        //токен хранится в sharedPref, т.к получение/сохран токена делается быстро и других нет доступа к нему.
+        // Только в приложении. Минус: можно увидеть token, если получить root доступ.
+        checkAuthStateEvents.emit(Unit)
+        checkAuthStateEvents.collect {
+            val currentToken = token
+            val loggedIn = currentToken != null && currentToken.isValid
+            val authState = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
+            emit(authState)
+            // Log.d("MyLog", "Token: ${token?.accessToken}") // Выдает в лог текущ токен
+        }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = AuthState.Initial
+    )
 
      val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
          .mergeWith(refreshedListFlow)
@@ -87,6 +106,10 @@ class NewsFeedRepositoryImpl(application: Application) {
         )
         _feedPosts.remove(feedPost) //после удаления с сервера удаляет локально из репозитория
         refreshedListFlow.emit(feedPosts)
+    }
+
+    suspend fun checkAuthState() {
+        checkAuthStateEvents.emit(Unit)
     }
 
     private fun getAccessToken(): String {
