@@ -1,31 +1,33 @@
 package com.dscreate_app.vkclient.data.repository
 
-import android.app.Application
 import com.dscreate_app.vkclient.data.mapper.NewsFeedMapper
-import com.dscreate_app.vkclient.data.network.ApiFactory
+import com.dscreate_app.vkclient.data.network.ApiService
+import com.dscreate_app.vkclient.domain.entities.AuthState
 import com.dscreate_app.vkclient.domain.entities.FeedPost
 import com.dscreate_app.vkclient.domain.entities.PostComment
 import com.dscreate_app.vkclient.domain.entities.StatisticItem
 import com.dscreate_app.vkclient.domain.entities.StatisticType
-import com.dscreate_app.vkclient.extantions.mergeWith
-import com.dscreate_app.vkclient.domain.entities.AuthState
 import com.dscreate_app.vkclient.domain.repository.NewsFeedRepository
+import com.dscreate_app.vkclient.extantions.mergeWith
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class NewsFeedRepositoryImpl(application: Application): NewsFeedRepository {
+class NewsFeedRepositoryImpl @Inject constructor (
+    private val storage: VKPreferencesKeyValueStorage,
+    private val apiService: ApiService,
+    private val mapper: NewsFeedMapper
+): NewsFeedRepository {
 
-   private val storage = VKPreferencesKeyValueStorage(application)
    private val token
        get() = VKAccessToken.restore(storage)
 
@@ -58,9 +60,6 @@ class NewsFeedRepositoryImpl(application: Application): NewsFeedRepository {
         delay(RETRY_TIMEOUT_MILLIS)
         true
     }
-
-    private val apiService = ApiFactory.apiService
-    private val mapper = NewsFeedMapper()
 
     private val _feedPosts = mutableListOf<FeedPost>()
     private val feedPosts: List<FeedPost>

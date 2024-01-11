@@ -20,12 +20,13 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dscreate_app.vkclient.navigation.AppNavGraph
 import com.dscreate_app.vkclient.navigation.rememberNavigationState
+import com.dscreate_app.vkclient.presentation.screens.ViewModelFactory
 import com.dscreate_app.vkclient.presentation.screens.comments.CommentsScreen
 import com.dscreate_app.vkclient.presentation.screens.news.NewsFeedScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModelFactory: ViewModelFactory) {
     val navigationState = rememberNavigationState()
 
     Scaffold(
@@ -68,6 +69,7 @@ fun MainScreen() {
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
                 NewsFeedScreen(
+                    viewModelFactory = viewModelFactory,
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         navigationState.navigateToComments(it)
@@ -78,6 +80,7 @@ fun MainScreen() {
             profileScreenContent = { TextCounter(name = "Profile") },
             commentsScreenContent = { feedPost ->
                 CommentsScreen(
+                    viewModelFactory = viewModelFactory,
                     feedPost = feedPost,
                     onBackPressed = {
                         navigationState.navHostController.popBackStack() // по кнопке <- закрыв экран без рекомпозици

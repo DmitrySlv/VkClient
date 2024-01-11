@@ -1,6 +1,5 @@
 package com.dscreate_app.vkclient.presentation.screens.comments
 
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,20 +34,20 @@ import coil.compose.AsyncImage
 import com.dscreate_app.vkclient.R
 import com.dscreate_app.vkclient.domain.entities.FeedPost
 import com.dscreate_app.vkclient.domain.entities.PostComment
+import com.dscreate_app.vkclient.presentation.screens.ViewModelFactory
 import com.dscreate_app.vkclient.presentation.screens.comments.view_model.CommentsViewModel
-import com.dscreate_app.vkclient.presentation.screens.comments.view_model.CommentsViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
+    viewModelFactory: ViewModelFactory,
     feedPost: FeedPost,
     onBackPressed: () -> Unit
 ) {
     val viewModel: CommentsViewModel = viewModel(
-        factory = CommentsViewModelFactory(
-            feedPost,
-            LocalContext.current.applicationContext as Application // В Composable функции получает Application
-        )
+        factory = viewModelFactory
+        //LocalContext.current.applicationContext as Application
+        // - В Composable функции получает Application
     )
     val screenState = viewModel.screenState.collectAsState(CommentsScreenState.Initial)
     val currentState = screenState.value
