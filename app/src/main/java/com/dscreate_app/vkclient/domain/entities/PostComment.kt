@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient.domain
+package com.dscreate_app.vkclient.domain.entities
 
 data class PostComment(
     val id: Long,

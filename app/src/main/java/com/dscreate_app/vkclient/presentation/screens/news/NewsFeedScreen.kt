@@ -17,12 +17,11 @@ import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.dscreate_app.vkclient.domain.FeedPost
+import com.dscreate_app.vkclient.domain.entities.FeedPost
 import com.dscreate_app.vkclient.presentation.screens.news.view_model.NewsFeedViewModel
 import com.dscreate_app.vkclient.ui.theme.DarkBlue
 

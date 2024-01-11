@@ -1,4 +1,4 @@
-package com.dscreate_app.vkclient.domain
+package com.dscreate_app.vkclient.domain.entities
 
 import android.os.Bundle
 import android.os.Parcelable

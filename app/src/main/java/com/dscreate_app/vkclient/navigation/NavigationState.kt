@@ -5,7 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.dscreate_app.vkclient.domain.FeedPost
+import com.dscreate_app.vkclient.domain.entities.FeedPost
 
 class NavigationState(
     val navHostController: NavHostController

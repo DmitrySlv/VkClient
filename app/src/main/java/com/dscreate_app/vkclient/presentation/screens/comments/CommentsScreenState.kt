@@ -1,7 +1,7 @@
 package com.dscreate_app.vkclient.presentation.screens.comments
 
-import com.dscreate_app.vkclient.domain.FeedPost
-import com.dscreate_app.vkclient.domain.PostComment
+import com.dscreate_app.vkclient.domain.entities.FeedPost
+import com.dscreate_app.vkclient.domain.entities.PostComment
 
 sealed class CommentsScreenState {
 

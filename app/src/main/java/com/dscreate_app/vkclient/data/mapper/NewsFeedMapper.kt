@@ -2,10 +2,10 @@ package com.dscreate_app.vkclient.data.mapper
 
 import com.dscreate_app.vkclient.data.models.CommentsResponseDto
 import com.dscreate_app.vkclient.data.models.NewsFeedResponseDto
-import com.dscreate_app.vkclient.domain.FeedPost
-import com.dscreate_app.vkclient.domain.PostComment
-import com.dscreate_app.vkclient.domain.StatisticItem
-import com.dscreate_app.vkclient.domain.StatisticType
+import com.dscreate_app.vkclient.domain.entities.FeedPost
+import com.dscreate_app.vkclient.domain.entities.PostComment
+import com.dscreate_app.vkclient.domain.entities.StatisticItem
+import com.dscreate_app.vkclient.domain.entities.StatisticType
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -35,8 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.dscreate_app.vkclient.R
-import com.dscreate_app.vkclient.domain.FeedPost
-import com.dscreate_app.vkclient.domain.PostComment
+import com.dscreate_app.vkclient.domain.entities.FeedPost
+import com.dscreate_app.vkclient.domain.entities.PostComment
 import com.dscreate_app.vkclient.presentation.screens.comments.view_model.CommentsViewModel
 import com.dscreate_app.vkclient.presentation.screens.comments.view_model.CommentsViewModelFactory
 

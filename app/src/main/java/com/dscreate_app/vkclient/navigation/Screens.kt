@@ -1,7 +1,7 @@
 package com.dscreate_app.vkclient.navigation
 
 import android.net.Uri
-import com.dscreate_app.vkclient.domain.FeedPost
+import com.dscreate_app.vkclient.domain.entities.FeedPost
 import com.google.gson.Gson
 
 sealed class Screens(

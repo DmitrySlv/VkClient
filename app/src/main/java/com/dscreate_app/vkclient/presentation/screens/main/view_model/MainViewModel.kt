@@ -4,17 +4,22 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dscreate_app.vkclient.data.repository.NewsFeedRepositoryImpl
+import com.dscreate_app.vkclient.domain.usecases.CheckAuthStateUseCase
+import com.dscreate_app.vkclient.domain.usecases.GetAuthStateUseCase
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
 
     private val repository = NewsFeedRepositoryImpl(application)
 
-    val authState = repository.authStateFlow
+    private val getAuthStateFlowUseCase = GetAuthStateUseCase(repository)
+    private val checkAuthStateUseCase = CheckAuthStateUseCase(repository)
+
+    val authState = getAuthStateFlowUseCase()
 
     fun performAuthResult() {
        viewModelScope.launch {
-           repository.checkAuthState()
+           checkAuthStateUseCase()
        }
     }
 }

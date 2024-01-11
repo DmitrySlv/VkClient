@@ -3,12 +3,13 @@ package com.dscreate_app.vkclient.data.repository
 import android.app.Application
 import com.dscreate_app.vkclient.data.mapper.NewsFeedMapper
 import com.dscreate_app.vkclient.data.network.ApiFactory
-import com.dscreate_app.vkclient.domain.FeedPost
-import com.dscreate_app.vkclient.domain.PostComment
-import com.dscreate_app.vkclient.domain.StatisticItem
-import com.dscreate_app.vkclient.domain.StatisticType
+import com.dscreate_app.vkclient.domain.entities.FeedPost
+import com.dscreate_app.vkclient.domain.entities.PostComment
+import com.dscreate_app.vkclient.domain.entities.StatisticItem
+import com.dscreate_app.vkclient.domain.entities.StatisticType
 import com.dscreate_app.vkclient.extantions.mergeWith
-import com.dscreate_app.vkclient.domain.AuthState
+import com.dscreate_app.vkclient.domain.entities.AuthState
+import com.dscreate_app.vkclient.domain.repository.NewsFeedRepository
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +23,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 
-class NewsFeedRepositoryImpl(application: Application) {
+class NewsFeedRepositoryImpl(application: Application): NewsFeedRepository {
 
    private val storage = VKPreferencesKeyValueStorage(application)
    private val token
@@ -69,7 +70,7 @@ class NewsFeedRepositoryImpl(application: Application) {
 
     private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
 
-    val authStateFlow = flow {
+    private val authStateFlow = flow {
         //токен хранится в sharedPref, т.к получение/сохран токена делается быстро и других нет доступа к нему.
         // Только в приложении. Минус: можно увидеть token, если получить root доступ.
         checkAuthStateEvents.emit(Unit)
@@ -86,7 +87,7 @@ class NewsFeedRepositoryImpl(application: Application) {
         initialValue = AuthState.Initial
     )
 
-     val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
+    private val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
          .mergeWith(refreshedListFlow)
          .stateIn(
              scope = coroutineScope,
@@ -94,11 +95,15 @@ class NewsFeedRepositoryImpl(application: Application) {
              initialValue = feedPosts
          )
 
-    suspend fun loadNextData() {
+    private fun getAccessToken(): String {
+        return token?.accessToken ?: throw IllegalStateException("Token is null")
+    }
+
+   override suspend fun loadNextData() {
         nextDataNeededEvents.emit(Unit)
     }
 
-    suspend fun deletePost(feedPost: FeedPost) {
+   override suspend fun deletePost(feedPost: FeedPost) {
         apiService.ignorePost(
             accessToken = getAccessToken(),
             ownerId = feedPost.communityId,
@@ -108,15 +113,11 @@ class NewsFeedRepositoryImpl(application: Application) {
         refreshedListFlow.emit(feedPosts)
     }
 
-    suspend fun checkAuthState() {
+   override suspend fun checkAuthState() {
         checkAuthStateEvents.emit(Unit)
     }
 
-    private fun getAccessToken(): String {
-        return token?.accessToken ?: throw IllegalStateException("Token is null")
-    }
-
-    suspend fun changeLikeStatus(feedPost: FeedPost) {
+   override suspend fun changeLikeStatus(feedPost: FeedPost) {
         val response = if (feedPost.isLiked) {
             apiService.deleteLike(
                 token = getAccessToken(),
@@ -141,7 +142,7 @@ class NewsFeedRepositoryImpl(application: Application) {
         refreshedListFlow.emit(feedPosts)
     }
 
-     fun getComments(feedPost: FeedPost): Flow<List<PostComment>> = flow {
+    override fun getComments(feedPost: FeedPost): StateFlow<List<PostComment>> = flow {
         val comments = apiService.getComments(
             accessToken = getAccessToken(),
             ownerId = feedPost.communityId,
@@ -151,7 +152,17 @@ class NewsFeedRepositoryImpl(application: Application) {
     }.retry {
         delay(RETRY_TIMEOUT_MILLIS)
          true
-    }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = listOf()
+    )
+
+    override fun getAuthStateFlow(): StateFlow<AuthState> = authStateFlow
+
+    override fun getRecommendations(): StateFlow<List<FeedPost>> = recommendations
+
+
 
     companion object {
         private const val RETRY_TIMEOUT_MILLIS =  3000L

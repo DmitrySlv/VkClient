@@ -1,6 +1,6 @@
 package com.dscreate_app.vkclient.presentation.screens.news
 
-import com.dscreate_app.vkclient.domain.FeedPost
+import com.dscreate_app.vkclient.domain.entities.FeedPost
 
 sealed class NewsFeedScreenState {
 
