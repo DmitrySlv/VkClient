@@ -80,7 +80,6 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
             profileScreenContent = { TextCounter(name = "Profile") },
             commentsScreenContent = { feedPost ->
                 CommentsScreen(
-                    viewModelFactory = viewModelFactory,
                     feedPost = feedPost,
                     onBackPressed = {
                         navigationState.navHostController.popBackStack() // по кнопке <- закрыв экран без рекомпозици
